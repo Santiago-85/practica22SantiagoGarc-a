@@ -3,7 +3,9 @@ package sistema.administrativo;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -298,5 +300,19 @@ public class Ventana extends JFrame{
         JScrollPane barraTablaClientes = new JScrollPane(tablaClientes);
         barraTablaClientes.setBounds(10, 10, 300, 300);
         panelControlClientes.add(barraTablaClientes);
+        
+        JButton btnCargarArchivo = new JButton("Buscar archivo CSV");
+        btnCargarArchivo.setBounds(350, 10, 200, 25);
+        panelControlClientes.add(btnCargarArchivo);
+        ActionListener buscarArchivo = new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent ae) {
+                 File archivoSeleccionado;
+                 JFileChooser ventanaSeleccion = new JFileChooser();
+                 ventanaSeleccion.showOpenDialog(null);
+                 archivoSeleccionado = ventanaSeleccion.getSelectedFile();
+            }
+         };
+        btnCargarArchivo.addActionListener(buscarArchivo);
      }
 }
