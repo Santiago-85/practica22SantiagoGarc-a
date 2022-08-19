@@ -3,7 +3,10 @@ package sistema.administrativo;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -311,8 +314,26 @@ public class Ventana extends JFrame{
                  JFileChooser ventanaSeleccion = new JFileChooser();
                  ventanaSeleccion.showOpenDialog(null);
                  archivoSeleccionado = ventanaSeleccion.getSelectedFile();
-            }
+                 System.out.println("La ubicacion del archivo es " + archivoSeleccionado.getPath());
+                 leerArchivoCSV(archivoSeleccionado.getPath());
+             }
          };
         btnCargarArchivo.addActionListener(buscarArchivo);
+     }
+     
+     public void leerArchivoCSV(String ruta){
+         try{
+             BufferedReader archivoTemporal = new BufferedReader(new FileReader(ruta));
+             String lineaLeida = "";
+             while(lineaLeida != null){
+                 lineaLeida = archivoTemporal.readLine();
+                 if(lineaLeida != null){
+                     System.out.println(lineaLeida);
+                 }
+             }
+             archivoTemporal.close();
+         }catch(IOException error){
+             JOptionPane.showMessageDialog(null, "No se pudo abrir el archivo CSV");
+         }
      }
 }
