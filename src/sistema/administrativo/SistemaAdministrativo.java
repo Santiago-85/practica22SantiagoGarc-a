@@ -17,7 +17,7 @@ public class SistemaAdministrativo {
         marco.setVisible(true);
         marco.setTitle("Sistema Administrativo De Clientes y Recursos");
         marco.setSize(450, 350);
-        marco.setLocationRelativeTo(null);
+        //marco.setLocationRelativeTo(null);
         marco.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
