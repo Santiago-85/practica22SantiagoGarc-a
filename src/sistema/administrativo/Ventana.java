@@ -27,14 +27,17 @@ import org.jfree.data.category.DefaultCategoryDataset;
 public class Ventana extends JFrame {
 
     Usuario usuSistema[] = new Usuario[10];
-    JPanel panelInicioSesion = new JPanel();
-    JPanel panelControl = new JPanel();
-    JPanel panelCrearUsuario = new JPanel();
+    JPanel panelInicioSesion;
+    JPanel panelControl; 
+    JPanel panelCrearUsuario;
     int control = 2;
     Cliente clientes[] = new Cliente[100];
     int controlClientes = 0;
-    JPanel panelControlClientes = new JPanel();
+    JPanel panelControlClientes; 
     int ControlClientes = 2;
+    Producto productos[] = new Producto[100];
+    int ControlProductos = 2;
+    JPanel panelControlProductos;
 
     //Metodo Constructor     
     public Ventana() {
@@ -70,7 +73,7 @@ public class Ventana extends JFrame {
     }
 
     public void objetos() {
-
+        panelInicioSesion = new JPanel();
         this.getContentPane().add(panelInicioSesion);
         panelInicioSesion.setLayout(null);
 
@@ -150,6 +153,7 @@ public class Ventana extends JFrame {
     }
 
     public void panelControl() {
+        panelControl = new JPanel();
         this.getContentPane().add(panelControl);
         panelControl.setLayout(null);
         this.setSize(600, 500);
@@ -171,13 +175,18 @@ public class Ventana extends JFrame {
         JButton btnAdminProductos = new JButton("Administracion de Productos");
         btnAdminProductos.setBounds(150, 80, 250, 25);
         panelControl.add(btnAdminProductos);
+        ActionListener administrarProductos = new ActionListener() {
+            public void actionPerformed(ActionEvent ae){
+                panelControlPro();
+                panelControlProductos.setVisible(true);
+            }
+        };
+        btnAdminProductos.addActionListener(administrarProductos);
 
-        JButton btnReportes = new JButton("Reportes");
-        btnReportes.setBounds(150, 150, 250, 25);
-        panelControl.add(btnReportes);
     }
 
     public void crearUsuario() {
+        panelCrearUsuario = new JPanel();
         this.getContentPane().add(panelCrearUsuario);
         panelCrearUsuario.setLayout(null);
         this.setSize(500, 450);
@@ -285,9 +294,10 @@ public class Ventana extends JFrame {
     }
 
     public void panelControlCli() {
+        panelControlClientes = new JPanel();
         this.getContentPane().add(panelControlClientes);
         panelControlClientes.setLayout(null);
-        this.setSize(750, 500);
+        this.setSize(850, 500);
         this.setTitle("Administracion de Clientes");
         panelControl.setVisible(false);
 
@@ -359,23 +369,76 @@ public class Ventana extends JFrame {
             }
         };
         btnReporte.addActionListener(crearHTML);
+        
+        JButton btnVolver = new JButton("volver al menú");
+        btnVolver.setBounds(500, 80, 200, 25);
+        panelControlClientes.add(btnVolver);
+        ActionListener volverInicio = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                panelControl.setVisible(true);
+                panelControlClientes.setVisible(false);
+                volverInicio();
+            }
+        };
+        btnVolver.addActionListener(volverInicio);
+        
     }
+    
+    public void panelControlPro(){
+    
+    
+    }
+    
+     public void ordenar(){
+        Cliente auxiliar;
+        for(int i=0; i<99; i++){
+                for(int j = 0; j<99; i++){
+                    if(clientes[j+1] == null){
+                        break;
+                    }else;{
+                    if(clientes[j].edad> clientes[j+1].edad){
+                        auxiliar = clientes[j+1];
+                        clientes[j+1] = clientes[j];
+                        clientes[j] = auxiliar;
+                    }
+                }
+            }
+        }
+     }
+    
     public void crearReporte(){
         try{
+            ordenar();
+            PrintWriter escribirCSS = new PrintWriter("reportes.estilo.css","UTF-8");
+            escribirCSS.println("");
+                    
+            escribirCSS.close();
                 PrintWriter escribir = new PrintWriter("reportes/index.html","UTF-8");
                 escribir.println("<!doctype html>");
                 escribir.println("<html>");
                 escribir.println("<head>");
                 escribir.println("<title>Reporte del Sistema</title>");
+                escribir.println("<link rel=\"stylesheet\" href=\"estilo.css\">");
                 escribir.println("</head>");
                 escribir.println("<body>");
                 escribir.println("<h1>Listado de Clientes en el Sistema</h1>");
                 escribir.println("<br>");
+                
+                escribir.println("<table border = 1>");
+                escribir.println("<tr>");
+                escribir.println("<td>NIT</td> <td>Nombre</td> <td>Edad</td> <td>Genéro</td>");
+                escribir.println("</tr>");
+                
                 for(int i = 0; i<99; i++){
                     if(clientes[i] != null){
-                    escribir.println("Nombre: " + clientes[i].nombre + " edad: " + clientes[i].edad + "<br>");
+                        escribir.println("<tr>");
+                        escribir.println("<td>" + clientes[i].nit + "</td><td>" + clientes[i].nombre + "</td><td>" + clientes[i].edad + "</td><td>" + clientes[i].genero + "</tdadmin>");
+                        escribir.println("</tr>");
+                    }
                 }
-                }
+                
+                escribir.println("</table>");
+                
                 escribir.println("</body>");
                 escribir.println("</html>");
                 escribir.close();
@@ -468,7 +531,7 @@ public class Ventana extends JFrame {
                         clientes[posicion].edad = Integer.parseInt(datosSeparados[1]);
                         clientes[posicion].genero = datosSeparados[2].charAt(0);
                         clientes[posicion].nit = Integer.parseInt(datosSeparados[3]);
-                        controlClientes++;
+                        ControlClientes++;
                     } else {
                         JOptionPane.showMessageDialog(null, "No se pueden registrar mas clientes");
                     }
