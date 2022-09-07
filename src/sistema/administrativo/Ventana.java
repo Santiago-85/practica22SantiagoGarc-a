@@ -169,12 +169,12 @@ public class Ventana extends JFrame {
         panelControl = new JPanel();
         this.getContentPane().add(panelControl);
         panelControl.setLayout(null);
-        this.setSize(600, 500);
+        this.setSize(500, 250);
         this.setTitle("Control Principal");
         panelInicioSesion.setVisible(false);
 
         JButton btnAdminClientes = new JButton("Administracion de Clientes");
-        btnAdminClientes.setBounds(150, 10, 250, 25);
+        btnAdminClientes.setBounds(125, 50, 250, 25);
         panelControl.add(btnAdminClientes);
         ActionListener administrarClientes = new ActionListener() {
             @Override
@@ -186,7 +186,7 @@ public class Ventana extends JFrame {
         btnAdminClientes.addActionListener(administrarClientes);
 
         JButton btnAdminProductos = new JButton("Administracion de Productos");
-        btnAdminProductos.setBounds(150, 80, 250, 25);
+        btnAdminProductos.setBounds(125, 120, 250, 25);
         panelControl.add(btnAdminProductos);
         ActionListener administrarProductos = new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
@@ -363,10 +363,14 @@ public class Ventana extends JFrame {
                 JFileChooser ventanaSeleccion = new JFileChooser();
                 ventanaSeleccion.showOpenDialog(null);
                 archivoSeleccionado = ventanaSeleccion.getSelectedFile();
-                System.out.println("La ubicacion del archivo es " + archivoSeleccionado.getPath());
+                //System.out.println("La ubicacion del archivo es " + archivoSeleccionado.getPath());
+                if(archivoSeleccionado == null){
+                    JOptionPane.showMessageDialog(null, "No existe la ruta");
+                }else{
                 leerArchivoCSV(archivoSeleccionado.getPath());
                 panelControlClientes.setVisible(false);
                 panelControlCli();
+              }
             }
         };
         btnCargarArchivo.addActionListener(buscarArchivo);
@@ -443,11 +447,14 @@ public class Ventana extends JFrame {
                 JFileChooser ventanaSeleccion = new JFileChooser();
                 ventanaSeleccion.showOpenDialog(null);
                 archivoSeleccionado = ventanaSeleccion.getSelectedFile();
-                System.out.println("La ubicacion del archivo es " + archivoSeleccionado.getPath());
+                 if(archivoSeleccionado == null){
+                    JOptionPane.showMessageDialog(null, "No existe la ruta");
+                }else{
                 leerArchivoProductosCSV(archivoSeleccionado.getPath());
                 panelControlProductos.setVisible(false);
                 panelControlPro();
-            }
+              } 
+            }      
         };
         btnCargarArchivo.addActionListener(buscarArchivo);
 
@@ -498,11 +505,11 @@ public class Ventana extends JFrame {
         Producto auxiliar;
         for (int i = 0; i < 99; i++) {
             for (int j = 0; j < 99; j++) {
-                if (clientes[j + 1] == null) {
+                if (productos[j + 1] == null) {
                     break;
                 } else;
                 {
-                    if (clientes[j].edad > productos[j + 1].precio) {
+                    if (productos[j].precio > productos[j + 1].precio) {
                         auxiliar = productos[j + 1];
                         productos[j + 1] = productos[j];
                         productos[j] = auxiliar;
@@ -574,7 +581,7 @@ public class Ventana extends JFrame {
 
             escribir.println("<table border = 1>");
             escribir.println("<tr>");
-            escribir.println("<td>NIT</td> <td>Nombre</td> <td>Precio</td> <td>Cantidad</td>");
+            escribir.println("<td>Nombre</td> <td>Precio</td> <td>Cantidad</td>");
             escribir.println("</tr>");
 
             for (int i = 0; i < 99; i++) {
@@ -739,7 +746,7 @@ public class Ventana extends JFrame {
                     String datosSeparados[] = lineaLeida.split(",");
 
                     int posicion = 0;
-                    if (ControlClientes < 100) {
+                    if (ControlProductos < 100) {
                         for (int i = 0; i < 99; i++) {
                             if (productos[i] == null) {
                                 posicion = i;
@@ -752,11 +759,11 @@ public class Ventana extends JFrame {
                         productos[posicion].cantidad = Integer.parseInt(datosSeparados[2]);
                         ControlProductos++;
                     } else {
-                        JOptionPane.showMessageDialog(null, "No se pueden registrar mas clientes");
+                        JOptionPane.showMessageDialog(null, "No se pueden registrar mas productos");
                     }
                 }
             }
-            JOptionPane.showMessageDialog(null, "Clientes registrado exitosamente, Total de Clientes " + ControlProductos);
+            JOptionPane.showMessageDialog(null, "Productos registrado exitosamente, Total de Productos " + ControlProductos);
             archivoTemporal.close();
         } catch (IOException error) {
             JOptionPane.showMessageDialog(null, "No se pudo abrir el archivo CSV");
